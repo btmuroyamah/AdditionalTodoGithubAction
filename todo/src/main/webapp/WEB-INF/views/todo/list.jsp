@@ -11,6 +11,17 @@
 </head>
 <body>
     <h1>Todo List</h1>
+    <div id="todoForm">
+        <t:messagesPanel />
+
+        <form:form
+           action="${pageContext.request.contextPath}/todo/create"
+            method="post" modelAttribute="todoForm">
+            <form:input path="todoTitle" />
+            <form:errors path="todoTitle" />
+            <form:button>Create Todo</form:button>
+        </form:form>
+    </div>
     <hr />
     <div id="todoList">
         <ul>
