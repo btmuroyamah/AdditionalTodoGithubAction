@@ -1,4 +1,4 @@
-package com.example.todo.domain.todo.repository;
+package com.example.todo.domain.repository.todo;
 
 import java.util.Collection;
 import java.util.Map;
