@@ -17,7 +17,6 @@ import com.example.todo.domain.model.Todo;
 import com.example.todo.domain.repository.todo.TodoRepository;
 
 @Service
-@Transactional 
 public class TodoServiceImpl implements TodoService {
 
     private static final long MAX_UNFINISHED_COUNT = 5;
@@ -38,7 +37,6 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Collection<Todo> findAll() {
         return todoRepository.findAll();
     }
