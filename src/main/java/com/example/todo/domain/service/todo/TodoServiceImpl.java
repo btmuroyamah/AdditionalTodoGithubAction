@@ -1,10 +1,8 @@
 package com.example.todo.domain.service.todo;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,50 +39,23 @@ public class TodoServiceImpl implements TodoService {
 			throw new ResourceNotFoundException(messages);
 		}
 		return todo;
-		
+
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Todo> findAll() {
+	public List<Todo> findAll() {
 
-		// TODO Todoの一覧を取得する
-		// Collection<Todo> todoAll = todoRepository.findAll();
+		List<Todo> todos = todoRepository.findAll();
 
-		// TODO 取得したTodo一覧を優先順位順にソートする
-
-//		String priorityOrder [] = {"High","Middle","Low"};
-//
-//		for(int i = 0; i < todoAll.size(); i++) {
-//			if ( todo.getPriority().matches(priorityOrder[0])) {
-//				Collections.sort(todoAll);
-//				
-//			} else if (todo.getPriority().matches(priorityOrder[1])) {
-//				
-//			} else {
-//				
-//			}
-//		}
-
-		// return 優先順にソートしたTodoの一覧
-
-		Collection<Todo> todos = todoRepository.findAll();
-
-		Collections.sort(todos, Comparator.comparing(Todo::getPriority));
-
+		//TodoクラスのPriorityを取り出し、Enumの中のIdを取り出して比較する
+		Collections.sort(todos, new Comparator<Todo>() {
+			public int compare(Todo e1, Todo e2) {
+				return Integer.compare(e1.getPriority().getId(), e2.getPriority().getId());
+			}
+		});
 		return todoRepository.findAll();
 
-	}
-	
-	public enum Priority {
-
-		High(1), Middle(2), Low(3);
-
-		private int id;
-
-		private Priority(int id) {
-			this.id = id;
-		}
 	}
 
 	@Override
@@ -97,7 +68,7 @@ public class TodoServiceImpl implements TodoService {
 		}
 
 		String todoId = UUID.randomUUID().toString();
-		Date createdAt = new Date();
+		LocalDate createdAt = LocalDate.now();
 
 		todo.setTodoId(todoId);
 		todo.setCreatedAt(createdAt);
