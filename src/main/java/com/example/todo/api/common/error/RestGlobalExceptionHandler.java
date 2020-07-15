@@ -1,8 +1,12 @@
 package com.example.todo.api.common.error;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +28,8 @@ import org.terasoluna.gfw.common.message.ResultMessage;
 
 @ControllerAdvice
 public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
+	
+	private static final Logger logger = LoggerFactory.getLogger(RestGlobalExceptionHandler.class);
 
 	@Inject
 	MessageSource messageSource;
@@ -42,6 +48,18 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private ApiError createApiError(WebRequest request, String errorCode, Object... args) {
 		return new ApiError(errorCode, messageSource.getMessage(errorCode, args, request.getLocale()));
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+		ApiError apiError = createApiError(request, "E402");
+		if (logger.isErrorEnabled()) {
+			logger.error("ConstraintViolations[\n{}\n]", ex.getConstraintViolations());
+		}
+		for(ConstraintViolation<?> error: ex.getConstraintViolations()) {
+		apiError.addDetail(createApiError(request, error.getMessage(), null));
+		}
+		return handleExceptionInternal(ex, apiError, null, null, request);
 	}
 
 	@Override

@@ -25,9 +25,8 @@ public class DateCheckValidator implements ConstraintValidator<DateCheck, LocalD
 		//TODO 期限が過去のものでないかチェック
 		LocalDate now = LocalDate.now();
 		if(!date.isBefore(now)) {
-			
 			//　期限が現在から1年を超えるものかチェック
-			if(date.isAfter(now.plusYears(1))) {
+			if(date.isBefore(now.plusYears(1))) {
 				return true;
 			}
 		}
