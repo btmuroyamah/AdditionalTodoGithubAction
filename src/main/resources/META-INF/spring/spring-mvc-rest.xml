@@ -15,7 +15,7 @@
     <context:property-placeholder
         location="classpath*:/META-INF/spring/*.properties" />
 
-    <mvc:annotation-driven>
+    <mvc:annotation-driven validator="validator">
         <mvc:message-converters register-defaults="false">
             <bean
                 class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -50,5 +50,9 @@
         <aop:advisor advice-ref="handlerExceptionResolverLoggingInterceptor"
             pointcut="execution(* org.springframework.web.servlet.HandlerExceptionResolver.resolveException(..))" />
     </aop:config>
+
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
+	    <property name="validator" ref="validator" />
+	</bean>
 
 </beans>

@@ -34,6 +34,8 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		return ResponseEntity.status(status).headers(headers).body(responseBody);
 	}
+	
+	
 
 	private ApiError createApiError(WebRequest request, String errorCode, Object... args) {
 		return new ApiError(errorCode, messageSource.getMessage(errorCode, args, request.getLocale()));

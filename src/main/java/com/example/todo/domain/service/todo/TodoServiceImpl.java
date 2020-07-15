@@ -1,5 +1,8 @@
 package com.example.todo.domain.service.todo;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
@@ -43,6 +46,12 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Collection<Todo> findByLimit(LocalDate start, LocalDate end) {
+        return todoRepository.findByLimit(start, end);
+    }
+
+    @Override
     public Todo create(Todo todo) {
         long unfinishedCount = todoRepository.countByFinished(false);
         if (unfinishedCount >= MAX_UNFINISHED_COUNT) {
@@ -52,7 +61,9 @@ public class TodoServiceImpl implements TodoService {
         }
 
         String todoId = UUID.randomUUID().toString();
-        Date createdAt = new Date();
+        Date date = new Date();
+        Instant instant = date.toInstant();
+        LocalDate createdAt = LocalDate.ofInstant(instant, ZoneId.systemDefault());
 
         todo.setTodoId(todoId);
         todo.setCreatedAt(createdAt);

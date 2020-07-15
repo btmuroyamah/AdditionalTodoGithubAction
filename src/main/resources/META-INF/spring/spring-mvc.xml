@@ -78,6 +78,14 @@
             </util:list>
         </constructor-arg>
     </bean>
+    
+    <mvc:annotation-driven validator="validator">
+    <!-- ... -->
+	</mvc:annotation-driven>
+
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
+	    <property name="validator" ref="validator" />
+	</bean>
 
     <!-- Setting Exception Handling. -->
     <!-- Exception Resolver. -->
