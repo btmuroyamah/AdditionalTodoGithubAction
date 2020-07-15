@@ -23,8 +23,8 @@ public class Todo implements Serializable {
 
     private boolean finished;
     
-    @DateCheck
-    @JsonDeserialize(using = LocalDateDeserializer.class)
+
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate createdAt;

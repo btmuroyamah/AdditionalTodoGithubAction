@@ -57,7 +57,7 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, apiError, headers, status, request);
 	}
 
-	//
+	//　日付かどうかのチェックはなぜかビーンバリデーションのメッセージが設定できなかったため、とりあえずエラーコードで対応
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
