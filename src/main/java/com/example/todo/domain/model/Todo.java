@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
+import com.example.todo.domain.service.todo.TodoServiceImpl.Priority;
+
 import lombok.Data;
 
 @Data
@@ -20,6 +22,7 @@ public class Todo implements Serializable {
     private Date createdAt;
     
     private LocalDate deadLine;
-
+    
+    private Priority priority;
 
 }

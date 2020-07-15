@@ -8,8 +8,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
 public class TodoResource implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,5 +29,7 @@ public class TodoResource implements Serializable {
     private Date createdAt;
     
     private LocalDate deadLine;
+    
+    private String priority;
 
 }
