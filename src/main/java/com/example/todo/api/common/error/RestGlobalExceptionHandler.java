@@ -1,12 +1,15 @@
 package com.example.todo.api.common.error;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,6 +56,15 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		return handleExceptionInternal(ex, apiError, headers, status, request);
 	}
+
+	//
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ApiError apiError = createApiError(request, "E401");
+		return handleExceptionInternal(ex, apiError, headers, status, request);
+	}
+	
 
 	private ApiError createApiError(WebRequest request, DefaultMessageSourceResolvable messageSourceResolvable,
 			String target) {

@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
-
 import com.github.dozermapper.core.Mapper;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,7 +36,7 @@ public class TodoRestController {
     @Inject
     Mapper beanMapper;
 
-  //期限の範囲を指定して検索
+  //　期限の範囲を指定して検索
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TodoResource> getTodosByLimit(@Validated @DateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("start") LocalDate start,
