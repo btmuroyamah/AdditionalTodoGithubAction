@@ -22,13 +22,10 @@ public class DateCheckValidator implements ConstraintValidator<DateCheck, LocalD
     //
     static boolean isDateValid(LocalDate date) {
 
-		//TODO 期限が過去のものでないかチェック
+		//TODO 期限が過去のものでないかチェック・期限が現在から1年を超えるものかチェック
 		LocalDate now = LocalDate.now();
-		if(!date.isBefore(now)) {
-			//　期限が現在から1年を超えるものかチェック
-			if(date.isBefore(now.plusYears(1))) {
-				return true;
-			}
+		if(!date.isBefore(now) && date.isBefore(now.plusYears(1))) {
+			return true;
 		}
         return false;
     }
