@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.validation.constraints.NotNull;
+
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.example.todo.domain.model.Todo;
@@ -28,6 +31,16 @@ public class TodoRepositoryImpl implements TodoRepository {
 	@Override
 	public Collection<Todo> findByLimit(LocalDate start, LocalDate end) {
 		Collection<Todo> todos = new ArrayList<Todo>();
+		
+		for(Todo todo: TODO_MAP.values()) {
+			if(todo.getDeadLine() == null) {
+				continue;
+			}
+			
+			if(start == null && end == null) {
+				
+			}
+		}
 		
 		//startとendがともに無ければ全件取得
 		if(start == null && end == null) {
@@ -66,7 +79,7 @@ public class TodoRepositoryImpl implements TodoRepository {
 				if(todo.getDeadLine() == null) {
 					continue;
 				}
-				if((todo.getDeadLine().isAfter(start) || todo.getDeadLine().isEqual(start)) 
+				if(isHoge(todo.getDeadLine(), start) || 
 						&& (todo.getDeadLine().isBefore(end) || todo.getDeadLine().isEqual(end))) {
 					todos.add(todo);
 				}
@@ -102,5 +115,13 @@ public class TodoRepositoryImpl implements TodoRepository {
         }
         return count;
     }
+	
+	private boolean isHoge(LocalDate target, LocalDate foo) {
+		if (foo == null) {
+			return false;
+		}
+		
+		return target.isAfter(foo) || target.isEqual(foo);
+	}
 }
 
