@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.validation.constraints.NotNull;
-
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.example.todo.domain.model.Todo;
@@ -37,52 +34,21 @@ public class TodoRepositoryImpl implements TodoRepository {
 				continue;
 			}
 			
+			//startとendがともに無ければ期限付きのTodoを全件取得
 			if(start == null && end == null) {
-				
-			}
-		}
-		
-		//startとendがともに無ければ全件取得
-		if(start == null && end == null) {
-			for(Todo todo: TODO_MAP.values()) {
-				if(todo.getDeadLine() == null) {
-					continue;
-				}
 				todos.add(todo);
-			}
-			
-			//startのみの場合
-		}else if(start != null && end == null) {
-			for(Todo todo: TODO_MAP.values()) {
-				if(todo.getDeadLine() == null) {
-					continue;
-				}
-				if(todo.getDeadLine().isAfter(start) || todo.getDeadLine().isEqual(start)) {
-					todos.add(todo);
-				}
-			}
-			
-			//endのみの場合
-		}else if(start == null && end != null) {
-			for(Todo todo: TODO_MAP.values()) {
-				if(todo.getDeadLine() == null) {
-					continue;
-				}
-				if(todo.getDeadLine().isBefore(end) || todo.getDeadLine().isEqual(end)) {
-					todos.add(todo);
-				}
-			}
-			
-			//startとendともにある場合
-		}else {
-			for(Todo todo: TODO_MAP.values()) {
-				if(todo.getDeadLine() == null) {
-					continue;
-				}
-				if(isHoge(todo.getDeadLine(), start) || 
-						&& (todo.getDeadLine().isBefore(end) || todo.getDeadLine().isEqual(end))) {
-					todos.add(todo);
-				}
+				
+				//startとendともにある場合
+			}else if(isAfterStart(todo, start) && isBeforeEnd(todo, end)) {
+				todos.add(todo);
+				
+				//endのみの場合
+			}else if(start == null && isBeforeEnd(todo, end)) {
+				todos.add(todo);
+				
+				//startのみの場合
+			}else if(end == null && isAfterStart(todo, start)) {
+				todos.add(todo);
 			}
 		}
 		
@@ -116,12 +82,18 @@ public class TodoRepositoryImpl implements TodoRepository {
         return count;
     }
 	
-	private boolean isHoge(LocalDate target, LocalDate foo) {
-		if (foo == null) {
+	private boolean isAfterStart(Todo target, LocalDate start) {
+		if(start == null) {
 			return false;
 		}
-		
-		return target.isAfter(foo) || target.isEqual(foo);
+		return target.getDeadLine().isAfter(start) || target.getDeadLine().isEqual(start);
+	}
+	
+	private boolean isBeforeEnd(Todo target, LocalDate end) {
+		if(end == null) {
+			return false;
+		}
+		return target.getDeadLine().isBefore(end) || target. getDeadLine().isEqual(end);
 	}
 }
 
