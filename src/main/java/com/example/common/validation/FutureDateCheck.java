@@ -14,15 +14,15 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.example.common.validation.DateCheck.List;
+import com.example.common.validation.FutureDateCheck.List;
 
 @Documented
-@Constraint(validatedBy = { DateCheckValidator.class })
+@Constraint(validatedBy = { FutureDateCheckValidator.class })
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
 @Repeatable(List.class)
-public @interface DateCheck {
-    String message() default "{com.example.common.validation.DateCheck.message}";
+public @interface FutureDateCheck {
+    String message() default "{com.example.common.validation.FutureDateCheck.message}";
 
     Class<?>[] groups() default {};
 
@@ -32,6 +32,6 @@ public @interface DateCheck {
     @Retention(RUNTIME)
     @Documented
     @interface List {
-    	DateCheck[] value();
+    	FutureDateCheck[] value();
     }
 }

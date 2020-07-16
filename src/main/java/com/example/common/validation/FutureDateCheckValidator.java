@@ -7,13 +7,13 @@ import javax.validation.ConstraintValidatorContext;
 import org.joda.time.LocalDate;
 import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
 
-public class DateCheckValidator implements ConstraintValidator<DateCheck, LocalDate> {
+public class FutureDateCheckValidator implements ConstraintValidator<FutureDateCheck, LocalDate> {
 	
 	@Inject
 	JodaTimeDateFactory dateFactory;
 
     @Override
-    public void initialize(DateCheck constraintAnnotation) {
+    public void initialize(FutureDateCheck constraintAnnotation) {
     }
 
     @Override

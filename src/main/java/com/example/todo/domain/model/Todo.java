@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.joda.time.LocalDate;
 
-import com.example.common.validation.DateCheck;
+import com.example.common.validation.FutureDateCheck;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -30,7 +30,7 @@ public class Todo implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate createdAt;
     
-    @DateCheck
+    @FutureDateCheck
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern="yyyy-MM-dd")

@@ -1,6 +1,5 @@
 package com.example.todo.api.todo;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import com.github.dozermapper.core.Mapper;
 
+import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.common.validation.DateCheck;
+import com.example.common.validation.FutureDateCheck;
 import com.example.todo.domain.model.Todo;
 import com.example.todo.domain.service.todo.TodoService;
 
@@ -39,8 +39,8 @@ public class TodoRestController {
   //　期限の範囲を指定して検索
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TodoResource> getTodosByLimit(@Validated @DateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("start") LocalDate start,
-    		@Validated @DateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("end") LocalDate end) {
+    public List<TodoResource> getTodosByLimit(@Validated @FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("start") LocalDate start,
+    		@Validated @FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("end") LocalDate end) {
         Collection<Todo> todos = todoService.findByLimit(start, end);
         List<TodoResource> todoResources = new ArrayList<>();
         for (Todo todo : todos) {
