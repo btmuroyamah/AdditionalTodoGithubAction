@@ -1,16 +1,15 @@
 package com.example.todo.domain.service.todo;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
@@ -21,6 +20,9 @@ import com.example.todo.domain.repository.todo.TodoRepository;
 @Service
 @Transactional
 public class TodoServiceImpl implements TodoService {
+	
+	@Inject
+	JodaTimeDateFactory dateFactory;
 
     private static final long MAX_UNFINISHED_COUNT = 5;
 
@@ -61,9 +63,7 @@ public class TodoServiceImpl implements TodoService {
         }
 
         String todoId = UUID.randomUUID().toString();
-        Date date = new Date();
-        Instant instant = date.toInstant();
-        LocalDate createdAt = LocalDate.ofInstant(instant, ZoneId.systemDefault());
+        LocalDate createdAt = dateFactory.newDateTime().toLocalDate();
 
         todo.setTodoId(todoId);
         todo.setCreatedAt(createdAt);

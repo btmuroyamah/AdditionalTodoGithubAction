@@ -1,7 +1,8 @@
 package com.example.todo.domain.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
+import org.joda.time.LocalDate;
 
 import com.example.common.validation.DateCheck;
 import com.fasterxml.jackson.annotation.JsonFormat;
