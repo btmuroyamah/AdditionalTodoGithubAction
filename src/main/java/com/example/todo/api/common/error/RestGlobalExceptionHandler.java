@@ -55,6 +55,17 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+    
+    private ApiError createApiError(WebRequest request, ConstraintViolation<?> constraintViolation) {
+        // FIXME 無理やりの実装
+        // バリデーションのアノテーション名を取得
+        String annotationName = constraintViolation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
+        // 対象フィールド名を取得
+        String field = constraintViolation.getPropertyPath().toString();
+        String targetField = field.split("[.]")[1];
+
+        return new ApiError(annotationName, constraintViolation.getMessage(), targetField);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
@@ -75,17 +86,6 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     WebRequest request) {
         ApiError apiError = createApiError(request, "E401");
         return handleExceptionInternal(ex, apiError, headers, status, request);
-    }
-
-    private ApiError createApiError(WebRequest request, ConstraintViolation<?> constraintViolation) {
-        // FIXME 無理やりの実装
-        // バリデーションのアノテーション名を取得
-        String annotationName = constraintViolation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
-        // 対象フィールド名を取得
-        String field = constraintViolation.getPropertyPath().toString();
-        String targetField = field.split("[.]")[1];
-
-        return new ApiError(annotationName, constraintViolation.getMessage(), targetField);
     }
 
     private ApiError createApiError(WebRequest request, DefaultMessageSourceResolvable messageSourceResolvable, String target) {
