@@ -1,6 +1,7 @@
 package com.example.todo.domain.service.todo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
+import com.example.todo.domain.model.Priority;
 import com.example.todo.domain.model.Todo;
 import com.example.todo.domain.repository.todo.TodoRepository;
 
@@ -48,12 +50,35 @@ public class TodoServiceImpl implements TodoService {
 
 		List<Todo> todos = todoRepository.findAll();
 
-		//TodoクラスのPriorityを取り出し、Enumの中のIdを取り出して比較する
+		//Comparatorインターフェースを匿名クラスで使用して優先度でソート
 		Collections.sort(todos, new Comparator<Todo>() {
 			public int compare(Todo e1, Todo e2) {
+				//TodoクラスのPriorityを取り出し、Enumの中のIdを取り出して比較する
 				return Integer.compare(e1.getPriority().getId(), e2.getPriority().getId());
 			}
 		});
+		//各優先度のtodoをList<Todo> todosHogeHogeに入れる
+		List<Todo> todosHigh = new ArrayList<>();
+		List<Todo> todosMiddle = new ArrayList<>();
+		List<Todo> todosLow = new ArrayList<>();
+		
+		//todosから一個ずつ繰り返し取り出してif文で判定
+		for(Todo todo : todos) {
+			if(todo.getPriority().name().equals("High") ) {
+				todosHigh.add(todo);
+				//TodoのCreatedAtで比較して降順
+				todosHigh.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
+				
+			}else if(todo.getPriority().name().equals("Middle")) {
+				todosMiddle.add(todo);
+				todosMiddle.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
+				
+			}else {
+				todosLow.add(todo);
+				todosLow.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
+			}
+		}
+		
 		return todoRepository.findAll();
 
 	}
@@ -73,6 +98,9 @@ public class TodoServiceImpl implements TodoService {
 		todo.setTodoId(todoId);
 		todo.setCreatedAt(createdAt);
 		todo.setFinished(false);
+		if(todo.getPriority() == null) {
+			todo.setPriority(Priority.Low);
+		}
 
 		todoRepository.create(todo);
 		/*

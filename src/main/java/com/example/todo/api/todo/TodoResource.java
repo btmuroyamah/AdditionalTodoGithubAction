@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.example.todo.domain.model.Priority;
+
 import lombok.Data;
 
 @Data
@@ -25,6 +27,6 @@ public class TodoResource implements Serializable {
 
 	private LocalDate deadLine;
 
-	private String priority;
+	private Priority priority;
 
 }
