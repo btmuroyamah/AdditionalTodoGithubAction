@@ -26,7 +26,7 @@ import lombok.Data;
 @Data
 public class TodoServiceImpl implements TodoService {
 
-	private static final long MAX_UNFINISHED_COUNT = 5;
+	private static final long MAX_UNFINISHED_COUNT = 50;
 
 	@Inject
 	TodoRepository todoRepository;
@@ -62,6 +62,8 @@ public class TodoServiceImpl implements TodoService {
 		List<Todo> todosMiddle = new ArrayList<>();
 		List<Todo> todosLow = new ArrayList<>();
 		
+		List<Todo> sortedTodos = new ArrayList<>();
+		
 		//todosから一個ずつ繰り返し取り出してif文で判定
 		for(Todo todo : todos) {
 			if(todo.getPriority().name().equals("High") ) {
@@ -79,8 +81,19 @@ public class TodoServiceImpl implements TodoService {
 			}
 		}
 		
-		return todoRepository.findAll();
+		AddTodo(sortedTodos, todosHigh);
+		AddTodo(sortedTodos, todosMiddle);
+		AddTodo(sortedTodos, todosLow);
+		
+		return sortedTodos;
 
+	}
+	
+	public void AddTodo( List<Todo> sortedTodos, List<Todo> todos) {
+		
+		for( Todo todo : todos) {
+			sortedTodos.add(todo);
+		}
 	}
 
 	@Override
