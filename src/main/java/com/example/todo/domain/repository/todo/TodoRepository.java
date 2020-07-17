@@ -1,13 +1,14 @@
 package com.example.todo.domain.repository.todo;
 
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import com.example.todo.domain.model.Todo;
 
 import java.util.Optional;
 
-import org.joda.time.LocalDate;
+
 
 public interface TodoRepository {
     Optional<Todo> findById(String todoId);

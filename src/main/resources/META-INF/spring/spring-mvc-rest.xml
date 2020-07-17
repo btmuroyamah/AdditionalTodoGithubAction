@@ -60,25 +60,4 @@
 		<property name="validator" ref="validator" />
 	</bean>
 
-	<bean
-		class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
-		id="pnxObjectMapper">
-		<property name="deserializersByType">
-			<map key-type="java.lang.Class">
-				<entry>
-					<key>
-						<value>org.joda.time.LocalDate</value>
-					</key>
-					<bean
-						class="com.fasterxml.jackson.datatype.joda.deser.LocalDateDeserializer">
-						<constructor-arg>
-							<util:constant
-								static-field="com.fasterxml.jackson.datatype.joda.cfg.FormatConfig.DEFAULT_DATETIME_PARSER" />
-						</constructor-arg>
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-
 </beans>

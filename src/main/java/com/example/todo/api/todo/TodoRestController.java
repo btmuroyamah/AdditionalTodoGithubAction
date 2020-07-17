@@ -1,5 +1,6 @@
 package com.example.todo.api.todo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import com.github.dozermapper.core.Mapper;
 
-import org.joda.time.LocalDate;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +52,7 @@ public class TodoRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoResource postTodos(@RequestBody TodoResource todoResource) {
+    public TodoResource postTodos(@Validated @RequestBody TodoResource todoResource) {
     	Todo createdTodo = todoService.create(beanMapper.map(todoResource, Todo.class));
         TodoResource createdTodoResponse = beanMapper.map(createdTodo, TodoResource.class);
         return createdTodoResponse;

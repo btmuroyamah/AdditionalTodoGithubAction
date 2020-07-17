@@ -80,6 +80,6 @@
 	    <property name="validator" ref="validator" />
 	</bean>
 	
-	<bean id="dateFactory" class="org.terasoluna.gfw.common.date.jodatime.DefaultJodaTimeDateFactory" />
+	<bean id="dateFactory" class="org.terasoluna.gfw.common.date.DefaultClassicDateFactory" />
 
 </beans>
