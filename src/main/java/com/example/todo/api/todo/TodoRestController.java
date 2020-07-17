@@ -52,7 +52,7 @@ public class TodoRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TodoResource postTodos(@RequestBody TodoResource todoResource) {
-        Todo createdTodo = todoService.create(beanMapper.map(todoResource, Todo.class));
+    	Todo createdTodo = todoService.create(beanMapper.map(todoResource, Todo.class));
         TodoResource createdTodoResponse = beanMapper.map(createdTodo, TodoResource.class);
         return createdTodoResponse;
     }

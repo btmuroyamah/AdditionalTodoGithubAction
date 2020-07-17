@@ -79,5 +79,7 @@
 	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
 	    <property name="validator" ref="validator" />
 	</bean>
+	
+	<bean id="dateFactory" class="org.terasoluna.gfw.common.date.jodatime.DefaultJodaTimeDateFactory" />
 
 </beans>

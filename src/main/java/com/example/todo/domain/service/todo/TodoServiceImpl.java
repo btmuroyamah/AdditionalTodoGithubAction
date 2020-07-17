@@ -1,7 +1,6 @@
 package com.example.todo.domain.service.todo;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -24,10 +23,10 @@ public class TodoServiceImpl implements TodoService {
 	@Inject
 	JodaTimeDateFactory dateFactory;
 
-    private static final long MAX_UNFINISHED_COUNT = 5;
-
     @Inject
     TodoRepository todoRepository;
+    
+    private static final long MAX_UNFINISHED_COUNT = 5;
 
     @Override
     @Transactional(readOnly = true)
