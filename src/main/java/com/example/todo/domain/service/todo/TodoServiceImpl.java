@@ -59,36 +59,33 @@ public class TodoServiceImpl implements TodoService {
 			}
 		});
 
+//		List<Todo> sortedTodos = todos.stream()
+//		        .sorted(Comparator.comparing(Todo::getPriority::getId)
+//		        .collect(Collectors.toList());
+
 		// 各優先度のtodoをList<Todo> todosHogeHogeに入れる
 		List<Todo> todosHigh = todos.stream()
-									.filter( h -> h.getPriority() == Priority.High)
-									.sorted(Comparator.comparing(Todo::getCreatedAt))
-									.collect(Collectors.toList());
-		
+				.filter(h -> h.getPriority() == Priority.High)
+				.sorted(Comparator.comparing(Todo::getCreatedAt))
+				.collect(Collectors.toList());
+
 		List<Todo> todosMiddle = todos.stream()
-										.filter( m -> m.getPriority() == Priority.Middle)
-										.sorted(Comparator.comparing(Todo::getCreatedAt))
-										.collect(Collectors.toList());
-		
-		List<Todo> todosLow = todos.stream() 
-									.filter( l -> l.getPriority() == Priority.Low)
-									.sorted(Comparator.comparing(Todo::getCreatedAt))
-									.collect(Collectors.toList());
-		
+				.filter(m -> m.getPriority() == Priority.Middle)
+				.sorted(Comparator.comparing(Todo::getCreatedAt))
+				.collect(Collectors.toList());
+
+		List<Todo> todosLow = todos.stream()
+				.filter(l -> l.getPriority() == Priority.Low)
+				.sorted(Comparator.comparing(Todo::getCreatedAt))
+				.collect(Collectors.toList());
+
 		List<Todo> sortedTodos = new ArrayList<>();
-		
-		addTodo(sortedTodos, todosHigh);
-		addTodo(sortedTodos, todosMiddle);
-		addTodo(sortedTodos, todosLow);
-		
+
+		sortedTodos.addAll(todosHigh);
+		sortedTodos.addAll(todosMiddle);
+		sortedTodos.addAll(todosLow);
+
 		return sortedTodos;
-	}
-	
-	private void addTodo(List<Todo> sortedTodos, List<Todo> todos) {
-		
-		for( Todo todo : todos) {
-			sortedTodos.add(todo);
-		}
 	}
 
 	@Override
