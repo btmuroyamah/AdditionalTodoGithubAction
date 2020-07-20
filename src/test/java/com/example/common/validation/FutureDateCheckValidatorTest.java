@@ -44,35 +44,36 @@ public class FutureDateCheckValidatorTest {
 	@Test
 	public void testIsValid_nullでtrueを返す() {
 		boolean result = target.isValid(null, context);
-		
 		assertThat(result, is(true));
 	}
 	
 	@Test
 	public void testIsValid_過去の日付でfalseを返す() {
 		boolean result = target.isValid(LocalDate.of(2019, 12, 31), context);
-		
 		assertThat(result, is(false));
 	}
 	
 	@Test
 	public void testIsValid_今日の日付でtrueを返す() {
-		boolean result = target.isValid(LocalDate.of(2020, 01, 01), context);
-		
+		boolean result = target.isValid(LocalDate.of(2020, 1, 1), context);
+		assertThat(result, is(true));
+	}
+	
+	@Test
+	public void testIsValid_一年以内の未来の日付でtrueを返す() {
+		boolean result = target.isValid(LocalDate.of(2020, 8, 4), context);
 		assertThat(result, is(true));
 	}
 	
 	@Test
 	public void testIsValid_364日未来の日付でtrueを返す() {
 		boolean result = target.isValid(LocalDate.of(2020, 12, 31), context);
-		
 		assertThat(result, is(true));
 	}
 	
 	@Test
 	public void testIsValid_一年未来の日付でfalseを返す() {
-		boolean result = target.isValid(LocalDate.of(2021, 01, 01), context);
-		
+		boolean result = target.isValid(LocalDate.of(2021, 1, 1), context);
 		assertThat(result, is(false));
 	}
 
