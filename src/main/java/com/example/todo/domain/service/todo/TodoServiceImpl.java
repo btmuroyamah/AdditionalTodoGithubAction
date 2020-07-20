@@ -77,14 +77,14 @@ public class TodoServiceImpl implements TodoService {
 		
 		List<Todo> sortedTodos = new ArrayList<>();
 		
-		AddTodo(sortedTodos, todosHigh);
-		AddTodo(sortedTodos, todosMiddle);
-		AddTodo(sortedTodos, todosLow);
+		addTodo(sortedTodos, todosHigh);
+		addTodo(sortedTodos, todosMiddle);
+		addTodo(sortedTodos, todosLow);
 		
 		return sortedTodos;
 	}
 	
-	public void AddTodo( List<Todo> sortedTodos, List<Todo> todos) {
+	private void addTodo(List<Todo> sortedTodos, List<Todo> todos) {
 		
 		for( Todo todo : todos) {
 			sortedTodos.add(todo);
