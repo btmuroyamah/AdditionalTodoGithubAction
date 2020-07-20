@@ -1,7 +1,7 @@
 package com.example.todo.domain.model;
 
 public enum Priority {
-	// ゆうせ：高
+	// 優先度：高
 	High(1),
 	
 	// 優先度：中
