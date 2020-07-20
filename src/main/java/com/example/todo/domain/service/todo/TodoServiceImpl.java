@@ -58,7 +58,7 @@ public class TodoServiceImpl implements TodoService {
 				return Integer.compare(e1.getPriority().getId(), e2.getPriority().getId());
 			}
 		});
-		
+
 		// 各優先度のtodoをList<Todo> todosHogeHogeに入れる
 		List<Todo> todosHigh = todos.stream()
 									.filter( h -> h.getPriority() == Priority.High)
@@ -74,40 +74,19 @@ public class TodoServiceImpl implements TodoService {
 									.filter( l -> l.getPriority() == Priority.Low)
 									.sorted(Comparator.comparing(Todo::getCreatedAt))
 									.collect(Collectors.toList());
-
+		
 		List<Todo> sortedTodos = new ArrayList<>();
 		
-		
-
-		// todosから一個ずつ繰り返し取り出してif文で判定
-//		for (Todo todo : todos) {
-//			if (todo.getPriority().name().equals("High")) {
-//				todosHigh.add(todo);
-//
-//			} else if (todo.getPriority().name().equals("Middle")) {
-//				todosMiddle.add(todo);
-//
-//			} else {
-//				todosLow.add(todo);
-//			}
-//
-//			// TodoのCreatedAtで比較して降順にソートする
-//			todosHigh.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
-//			todosMiddle.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
-//			todosLow.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
-//		}
-
 		AddTodo(sortedTodos, todosHigh);
 		AddTodo(sortedTodos, todosMiddle);
 		AddTodo(sortedTodos, todosLow);
-
+		
 		return sortedTodos;
-
 	}
-
-	public void AddTodo(List<Todo> sortedTodos, List<Todo> todos) {
-
-		for (Todo todo : todos) {
+	
+	public void AddTodo( List<Todo> sortedTodos, List<Todo> todos) {
+		
+		for( Todo todo : todos) {
 			sortedTodos.add(todo);
 		}
 	}
