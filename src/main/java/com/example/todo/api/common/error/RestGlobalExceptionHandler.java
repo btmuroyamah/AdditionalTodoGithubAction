@@ -26,93 +26,98 @@ import org.terasoluna.gfw.common.message.ResultMessage;
 @ControllerAdvice
 public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(RestGlobalExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(RestGlobalExceptionHandler.class);
 
-    @Inject
-    MessageSource messageSource;
+	@Inject
+	MessageSource messageSource;
 
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        Object responseBody = body;
-        if (body == null) {
-            responseBody = createApiError(request, "E999", ex.getMessage());
-        }
-        return ResponseEntity.status(status).headers(headers).body(responseBody);
-    }
+	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		Object responseBody = body;
+		if (body == null) {
+			responseBody = createApiError(request, "E999", ex.getMessage());
+		}
+		return ResponseEntity.status(status).headers(headers).body(responseBody);
+	}
 
-    private ApiError createApiError(WebRequest request, String errorCode, Object... args) {
-        return new ApiError(errorCode, messageSource.getMessage(errorCode, args, request.getLocale()));
-    }
+	private ApiError createApiError(WebRequest request, String errorCode, Object... args) {
+		return new ApiError(errorCode, messageSource.getMessage(errorCode, args, request.getLocale()));
+	}
 
-    @ExceptionHandler
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
-        ApiError apiError = createApiError(request, "E402");
+	@ExceptionHandler
+	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex,
+			WebRequest request) {
+		ApiError apiError = createApiError(request, "E402");
 
-        // バリデーションの詳細を詰める
-        for (ConstraintViolation<?> error : ex.getConstraintViolations()) {
-            apiError.addDetail(createApiError(request, error));
-        }
+		// バリデーションの詳細を詰める
+		for (ConstraintViolation<?> error : ex.getConstraintViolations()) {
+			apiError.addDetail(createApiError(request, error));
+		}
 
-        return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-    }
-    
-    private ApiError createApiError(WebRequest request, ConstraintViolation<?> constraintViolation) {
-        // FIXME 無理やりの実装
-        // バリデーションのアノテーション名を取得
-        String annotationName = constraintViolation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
-        // 対象フィールド名を取得
-        String field = constraintViolation.getPropertyPath().toString();
-        String targetField = field.split("[.]")[1];
+		return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
 
-        return new ApiError(annotationName, constraintViolation.getMessage(), targetField);
-    }
+	private ApiError createApiError(WebRequest request, ConstraintViolation<?> constraintViolation) {
+		// FIXME 無理やりの実装
+		// バリデーションのアノテーション名を取得
+		String annotationName = constraintViolation.getConstraintDescriptor().getAnnotation().annotationType()
+				.getSimpleName();
+		// 対象フィールド名を取得
+		String field = constraintViolation.getPropertyPath().toString();
+		String targetField = field.split("[.]")[1];
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
-                    WebRequest request) {
-        ApiError apiError = createApiError(request, "E400");
-        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            apiError.addDetail(createApiError(request, fieldError, fieldError.getField()));
-        }
-        for (ObjectError objectError : ex.getBindingResult().getGlobalErrors()) {
-            apiError.addDetail(createApiError(request, objectError, objectError.getObjectName()));
-        }
-        return handleExceptionInternal(ex, apiError, headers, status, request);
-    }
+		return new ApiError(annotationName, constraintViolation.getMessage(), targetField);
+	}
 
-    // 日付かどうかのチェックはなぜかビーンバリデーションのメッセージが設定できなかったため、とりあえずエラーコードで対応
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status,
-                    WebRequest request) {
-        ApiError apiError = createApiError(request, "E401");
-        return handleExceptionInternal(ex, apiError, headers, status, request);
-    }
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ApiError apiError = createApiError(request, "E400");
+		for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+			apiError.addDetail(createApiError(request, fieldError, fieldError.getField()));
+		}
+		for (ObjectError objectError : ex.getBindingResult().getGlobalErrors()) {
+			apiError.addDetail(createApiError(request, objectError, objectError.getObjectName()));
+		}
+		return handleExceptionInternal(ex, apiError, headers, status, request);
+	}
 
-    private ApiError createApiError(WebRequest request, DefaultMessageSourceResolvable messageSourceResolvable, String target) {
-        return new ApiError(messageSourceResolvable.getCode(), messageSource.getMessage(messageSourceResolvable, request.getLocale()), target);
-    }
+	// 日付かどうかのチェックはなぜかビーンバリデーションのメッセージが設定できなかったため、とりあえずエラーコードで対応
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ApiError apiError = createApiError(request, "E401");
+		return handleExceptionInternal(ex, apiError, headers, status, request);
+	}
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
-        return handleResultMessagesNotificationException(ex, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
+	private ApiError createApiError(WebRequest request, DefaultMessageSourceResolvable messageSourceResolvable,
+			String target) {
+		return new ApiError(messageSourceResolvable.getCode(),
+				messageSource.getMessage(messageSourceResolvable, request.getLocale()), target);
+	}
 
-    private ResponseEntity<Object> handleResultMessagesNotificationException(ResultMessagesNotificationException ex, HttpHeaders headers,
-                    HttpStatus status, WebRequest request) {
-        ResultMessage message = ex.getResultMessages().iterator().next();
-        ApiError apiError = createApiError(request, message.getCode(), message.getArgs());
-        return handleExceptionInternal(ex, apiError, headers, status, request);
-    }
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
+		return handleResultMessagesNotificationException(ex, new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        return handleResultMessagesNotificationException(ex, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+	private ResponseEntity<Object> handleResultMessagesNotificationException(ResultMessagesNotificationException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ResultMessage message = ex.getResultMessages().iterator().next();
+		ApiError apiError = createApiError(request, message.getCode(), message.getArgs());
+		return handleExceptionInternal(ex, apiError, headers, status, request);
+	}
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleSystemError(Exception ex, WebRequest request) {
-        ApiError apiError = createApiError(request, "E500");
-        return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
-    }
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+		return handleResultMessagesNotificationException(ex, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleSystemError(Exception ex, WebRequest request) {
+		ApiError apiError = createApiError(request, "E500");
+		return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
 
 }
