@@ -29,7 +29,7 @@ public class TodoResource implements Serializable {
 	private boolean finished;
 
 	@JsonSerialize(using = LocalDateSerializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate createdAt;
 
 	@JsonDeserialize(using = LocalDateDeserializer.class)

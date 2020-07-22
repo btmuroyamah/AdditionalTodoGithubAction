@@ -24,7 +24,6 @@ public class TodoRepositoryImplTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-//		TodoRepositoryImpl.TODO_MAP.clear();
 		TodoRepositoryImpl.TODO_MAP.put("1", new Todo("1", "title1", true, LocalDate.of(2020, 1, 1)));
 		TodoRepositoryImpl.TODO_MAP.put("2", new Todo("2", "title2", false, LocalDate.of(2020, 2, 2)));
 		TodoRepositoryImpl.TODO_MAP.put("3", new Todo("3", "title3", false, null));

@@ -44,15 +44,10 @@ public class TodoRestControllerTest {
 	@Mock
 	TodoService todoService;
 	
-//	@Mock
-//	Mapper beanMapper;
-//	
-//	@Inject
-//	Mapper beanMapper2;
-	
 	@Before
 	public void setUp() throws Exception {
 		 mockMvc = MockMvcBuilders.standaloneSetup(target).alwaysDo(log()).build();
+		 //mapperの設定を追加
 		 Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 		 ReflectionTestUtils.setField(target, "beanMapper", mapper);
 	}
@@ -60,13 +55,11 @@ public class TodoRestControllerTest {
 	@Test
 	public void testgetTodosByLimit_1() throws Exception {
 		
+		//検証するデータを登録
 		Collection<Todo> todos = new ArrayList<Todo>();
 		Todo todo = new Todo("1", "title1", false, LocalDate.of(2020, 8, 1));
 		todos.add(todo);
-//		TodoResource todoResource = new TodoResource();
-//		todoResource = (beanMapper2.map(todo, TodoResource.class));
 		when(todoService.findByLimit(Mockito.any(), Mockito.any())).thenReturn(todos);
-//		when(beanMapper.map(Mockito.any(), Mockito.any())).thenReturn(todoResource);
 		
 		mockMvc.perform(
 				get("/todos")
@@ -79,24 +72,3 @@ public class TodoRestControllerTest {
 		}
 	}
 	
-//	@Test
-//	  public void postTodoTest() throws Exception {
-//	    String title = "title";
-//	    TodoResource todoRequest = new TodoResource();
-//	    todoRequest.setTodoTitle(title);
-//	    MvcResult result =
-//	        mockMvc
-//	            .perform(MockMvcRequestBuilders.get("/todos")
-//	            	.param("start", "2020-01-01")
-//					.param("end", "2020-12-31")
-//	                .content(mapper.writeValueAsString(todoRequest))
-//	                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-//	            .andExpect(status().isCreated()).andReturn();
-//
-//	    TodoResource todoResponce =
-//	        mapper.readValue(result.getResponse().getContentAsString(), TodoResource.class);
-//	    assertThat(todoResponce.getTodoId(), notNullValue());
-//	    assertThat(todoResponce.getTodoTitle(), equalTo(title));
-//	    assertThat(todoResponce.isFinished(), equalTo(false));
-//	    assertThat(todoResponce.getCreatedAt(), notNullValue());
-//	  }
