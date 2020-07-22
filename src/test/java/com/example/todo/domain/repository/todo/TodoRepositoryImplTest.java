@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,8 +23,9 @@ public class TodoRepositoryImplTest {
 	@Rule
 	public MockitoRule mockito = MockitoJUnit.rule();
 	
-	@BeforeClass
+	@Before
 	public static void setUpBeforeClass() throws Exception {
+		TodoRepositoryImpl.TODO_MAP.clear();
 		TodoRepositoryImpl.TODO_MAP.put("1", new Todo("1", "title1", true, LocalDate.of(2020, 1, 1)));
 		TodoRepositoryImpl.TODO_MAP.put("2", new Todo("2", "title2", false, LocalDate.of(2020, 2, 2)));
 		TodoRepositoryImpl.TODO_MAP.put("3", new Todo("3", "title3", false, null));
