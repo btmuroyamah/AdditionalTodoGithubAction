@@ -2,6 +2,7 @@ package com.example.todo.api.todo;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,6 +74,32 @@ public class TodoRestControllerTest {
 				.andExpect(content().contentType("application/json;charset=UTF-8"))
 				.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"high\",\"finished\": false,"
 						+ "\"createdAt\": 2020-07-01 ,\"deadLine\": null,\"priority\": \"High\"}]"));
+	}
+	
+	@Test
+	public void postMappingのテスト() throws Exception{
+		
+		//設定
+		List<Todo> mockList = new ArrayList<>();
+		
+		Todo fakePriority = new Todo();
+		fakePriority.setTodoId("1");
+		fakePriority.setTodoTitle("fake");
+		fakePriority.setFinished(false);
+		fakePriority.setCreatedAt(LocalDate.of(2020, 7, 1));
+		fakePriority.setDeadLine(null);
+		fakePriority.setPriority(null);
+		
+		mockList.add(fakePriority);
+		
+		when(todoService.findAll()).thenReturn(mockList);
+		
+		//実行
+		mockMvc.perform(post("/todos").content("{\"todoTitle\": \"５\",\"priority\":\"ぽんぽん\"}").accept(MediaType.APPLICATION_JSON))
+		
+				//ステータス、json、コンテントタイプのチェックをする=アサーション
+				.andExpect(status().isUnsupportedMediaType());
+				
 	}
 
 }
