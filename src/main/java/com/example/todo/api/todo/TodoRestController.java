@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
-import com.github.dozermapper.core.Mapper;
-
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -20,64 +18,67 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.common.validation.FutureDateCheck;
 import com.example.todo.domain.model.Todo;
 import com.example.todo.domain.service.todo.TodoService;
+import com.github.dozermapper.core.Mapper;
 
 @RestController
 @RequestMapping("todos")
 @Validated
 public class TodoRestController {
 
-    @Inject
-    TodoService todoService;
-    @Inject
-    Mapper beanMapper;
+	@Inject
+	TodoService todoService;
+	@Inject
+	Mapper beanMapper;
 
-  //　期限の範囲を指定して検索
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<TodoResource> getTodosByLimit(@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("start") LocalDate start,
-    		@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("end") LocalDate end) {
-        Collection<Todo> todos = todoService.findByLimit(start, end);
-        List<TodoResource> todoResources = new ArrayList<>();
-        for (Todo todo : todos) {
-            todoResources.add(beanMapper.map(todo, TodoResource.class));
-        }
-        return todoResources;
-    }
+	// 期限の範囲を指定して検索
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<TodoResource> getTodosByLimit(
+			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false, name = "start") LocalDate start,
+			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false,name = "end") LocalDate end) {
+		Collection<Todo> todos = todoService.findByLimit(start, end);
+		List<TodoResource> todoResources = new ArrayList<>();
+		for (Todo todo : todos) {
+			todoResources.add(beanMapper.map(todo, TodoResource.class));
+		}
+		return todoResources;
+	}
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public TodoResource postTodos(@Validated @RequestBody TodoResource todoResource) {
-    	Todo createdTodo = todoService.create(beanMapper.map(todoResource, Todo.class));
-        TodoResource createdTodoResponse = beanMapper.map(createdTodo, TodoResource.class);
-        return createdTodoResponse;
-    }
-    
-    @GetMapping("{todoId}")
-    @ResponseStatus(HttpStatus.OK)
-    public TodoResource getTodo(@PathVariable("todoId") String todoId) {
-        Todo todo = todoService.findOne(todoId);
-        TodoResource todoResource = beanMapper.map(todo, TodoResource.class);
-        return todoResource;
-    }
-    
-    @PutMapping("{todoId}")
-    @ResponseStatus(HttpStatus.OK)
-    public TodoResource putTodo(@PathVariable("todoId") String todoId) {
-        Todo finishedTodo = todoService.finish(todoId);
-        TodoResource finishedTodoResource = beanMapper.map(finishedTodo, TodoResource.class);
-        return finishedTodoResource;
-    }
-    
-    @DeleteMapping("{todoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTodo(@PathVariable("todoId") String todoId) {
-        todoService.delete(todoId);
-    }
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public TodoResource postTodos(@Validated @RequestBody TodoResource todoResource) {
+		Todo createdTodo = todoService.create(beanMapper.map(todoResource, Todo.class));
+		TodoResource createdTodoResponse = beanMapper.map(createdTodo, TodoResource.class);
+		return createdTodoResponse;
+	}
+
+	@GetMapping("{todoId}")
+	@ResponseStatus(HttpStatus.OK)
+	public TodoResource getTodo(@PathVariable("todoId") String todoId) {
+		Todo todo = todoService.findOne(todoId);
+		TodoResource todoResource = beanMapper.map(todo, TodoResource.class);
+		return todoResource;
+	}
+
+	@PutMapping("{todoId}")
+	@ResponseStatus(HttpStatus.OK)
+	public TodoResource putTodo(@PathVariable("todoId") String todoId) {
+		Todo finishedTodo = todoService.finish(todoId);
+		TodoResource finishedTodoResource = beanMapper.map(finishedTodo, TodoResource.class);
+		return finishedTodoResource;
+	}
+
+	@DeleteMapping("{todoId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteTodo(@PathVariable("todoId") String todoId) {
+		todoService.delete(todoId);
+	}
 
 }

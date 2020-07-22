@@ -7,18 +7,24 @@ import lombok.Data;
 
 @Data
 public class Todo implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
-    private String todoId;
+	private String todoId;
 
-    private String todoTitle;
+	private String todoTitle;
 
-    private boolean finished;
+	private boolean finished;
 
-    private LocalDate createdAt;
-    
-    private LocalDate deadLine;
+	private LocalDate createdAt;
 
+	private LocalDate deadLine;
+	
+	public Todo(String todoId, String title, boolean finished, LocalDate deadLine){
+		this.todoId = todoId;
+		this.todoTitle = title;
+		this.finished = finished;
+		this.deadLine = deadLine;
+	}
 
 }
