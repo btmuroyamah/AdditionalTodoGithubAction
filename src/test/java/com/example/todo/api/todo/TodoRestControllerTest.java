@@ -50,7 +50,7 @@ public class TodoRestControllerTest {
 	}
 
 	@Test
-	public void getMappingのテスト() throws Exception {
+	public void testGetTodos_Request200() throws Exception {
 		// 設定
 		List<Todo> mockList = new ArrayList<>();
 
@@ -77,7 +77,7 @@ public class TodoRestControllerTest {
 	}
 	
 	@Test
-	public void postMappingのテスト() throws Exception{
+	public void testPostTodos_Request415() throws Exception{
 		
 		//設定
 		List<Todo> mockList = new ArrayList<>();
