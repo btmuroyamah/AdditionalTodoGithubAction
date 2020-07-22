@@ -31,7 +31,7 @@ public class TodoServiceTest {
 	private TodoServiceImpl target;
 
 	@Test
-	public void 優先度順でソート() {
+	public void testFindAll_PrioritySort() {
 		// findAll()を呼び出したときにmockListをかえす処理
 
 		// 設定
@@ -63,7 +63,7 @@ public class TodoServiceTest {
 	}
 
 	@Test
-	public void 各優先度の中で日付降順でソート() {
+	public void testFindAll_LocalDateSort() {
 
 		// 設定
 		List<Todo> mockList = new ArrayList<>();
@@ -91,6 +91,27 @@ public class TodoServiceTest {
 		assertThat(result.get(2).getCreatedAt(), is(LocalDate.of(2020, 7, 3)));
 		assertThat(result.get(1).getCreatedAt(), is(LocalDate.of(2020, 7, 2)));
 		assertThat(result.get(0).getCreatedAt(), is(LocalDate.of(2020, 7, 1)));
+	}
+	
+	@Test
+	public void testCreate_NullToLow() {
+		//設定
+		List<Todo> mockList = new ArrayList<>();
+		
+		Todo mockNull = new Todo();
+		mockNull.setPriority(null);
+		mockNull.setCreatedAt(LocalDate.of(2020, 7, 1));
+		
+		mockList.add(mockNull);
+		
+		when(todoRepository.findAll()).thenReturn(mockList);
+		
+		//実行
+		List<Todo> result = target.findAll();
+		
+		//アサーション
+		assertThat(result.get(0).getPriority(), is(Priority.Low));
+		
 	}
 
 }

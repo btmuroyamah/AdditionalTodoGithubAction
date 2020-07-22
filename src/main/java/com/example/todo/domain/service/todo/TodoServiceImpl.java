@@ -103,7 +103,7 @@ public class TodoServiceImpl implements TodoService {
 		todo.setTodoId(todoId);
 		todo.setCreatedAt(createdAt);
 		todo.setFinished(false);
-		if (todo.getPriority() == null) {
+		if (todo.getPriority().equals(null)){
 			todo.setPriority(Priority.Low);
 		}
 
