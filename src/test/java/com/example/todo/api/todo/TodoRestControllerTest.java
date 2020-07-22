@@ -3,25 +3,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.inject.Inject;
-
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.todo.domain.service.todo.TodoService;
-import com.github.dozermapper.core.Mapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ContextConfiguration(locations = {
         "classpath:META-INF/spring/applicationContext.xml",
         "classpath:META-INF/spring/test-context.xml",
         "classpath:META-INF/spring/spring-mvc-rest.xml"})
+@WebAppConfiguration
 public class TodoRestControllerTest {
+	
+	@Rule
+	public MockitoRule mockito = MockitoJUnit.rule();
 	
 	@Mock
 	TodoService todoService;
@@ -30,16 +35,16 @@ public class TodoRestControllerTest {
 	TodoResource todoResource;
 	
 	@InjectMocks
-	TodoRestController target;
+	private TodoRestController target;
 	
-	@Inject
-	Mapper beanMapper;
-
+	ObjectMapper mapper;
+	
 	MockMvc mockMvc;
 	
 	@Before
     public void setup() {
 		mockMvc = MockMvcBuilders.standaloneSetup(target).alwaysDo(log()).build();
+		mapper = new ObjectMapper();
     }
 	
 	@Test

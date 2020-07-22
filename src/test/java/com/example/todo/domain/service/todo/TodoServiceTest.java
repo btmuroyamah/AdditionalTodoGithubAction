@@ -68,6 +68,7 @@ public class TodoServiceTest {
 	@Test
 	public void 各優先度の中で日付降順でソート() {
 		
+		//設定
 		List<Todo> mockList = new ArrayList<>();
 
 		Todo mockHigh1 = new Todo();
@@ -86,9 +87,13 @@ public class TodoServiceTest {
 		
 		when(todoRepository.findAll()).thenReturn(mockList);
 		
-		List<Todo> expected = Arrays.asList(mockHigh3, mockHigh2, mockHigh1);
+		//実行
+		List<Todo> result = target.findAll();
 		
-		assertEquals(expected, mockList);
+		//アサーション
+		assertThat(result.get(2).getCreatedAt(), is(LocalDate.of(2020, 7, 3)));
+		assertThat(result.get(1).getCreatedAt(), is(LocalDate.of(2020, 7, 2)));
+		assertThat(result.get(0).getCreatedAt(), is(LocalDate.of(2020, 7, 1)));
 	}
 	
 
