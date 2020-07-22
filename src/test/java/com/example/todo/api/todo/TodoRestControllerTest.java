@@ -5,85 +5,78 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.example.todo.domain.model.Todo;
 import com.example.todo.domain.service.todo.TodoService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextHierarchy({ @ContextConfiguration({
-    "classpath:META-INF/spring/applicationContext.xml"}),
-    @ContextConfiguration("classpath:META-INF/spring/spring-mvc-rest.xml") })
-@WebAppConfiguration
-public class TodoRestControllerTest {
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 
-	@Inject
-	WebApplicationContext webApplicationContext;
-	
-	MockMvc mockMvc;
+public class TodoRestControllerTest {
 	
 	@Rule
 	public MockitoRule mokito = MockitoJUnit.rule();
+
+	@InjectMocks
+	TodoRestController target;
 	
-	ObjectMapper mapper;
+	MockMvc mockMvc;
 	
 	@Mock
 	TodoService todoService;
 	
+//	@Mock
+//	Mapper beanMapper;
+//	
+//	@Inject
+//	Mapper beanMapper2;
+	
 	@Before
 	public void setUp() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).alwaysDo(log()).build();
-		mapper = new ObjectMapper();
+		 mockMvc = MockMvcBuilders.standaloneSetup(target).alwaysDo(log()).build();
+		 Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+		 ReflectionTestUtils.setField(target, "beanMapper", mapper);
 	}
+	
 	@Test
-	public void testgetTodosByLimit_1() {
-		LocalDate start = LocalDate.of(2020, 8, 1);
-		LocalDate end = LocalDate.of(2020, 12, 31);
+	public void testgetTodosByLimit_1() throws Exception {
+		
 		Collection<Todo> todos = new ArrayList<Todo>();
-		todos.add(new Todo("1", "title1", false, LocalDate.of(2020, 8, 1)));
-		//todos.add(new Todo("2", "title2", false, LocalDate.of(2020, 2, 2)));
-		when(todoService.findByLimit(start, end)).thenReturn(todos);
+		Todo todo = new Todo("1", "title1", false, LocalDate.of(2020, 8, 1));
+		todos.add(todo);
+//		TodoResource todoResource = new TodoResource();
+//		todoResource = (beanMapper2.map(todo, TodoResource.class));
+		when(todoService.findByLimit(Mockito.any(), Mockito.any())).thenReturn(todos);
+//		when(beanMapper.map(Mockito.any(), Mockito.any())).thenReturn(todoResource);
 		
-		
-		try {
-			mockMvc.perform(
-					get("/todos")
-					.param("start", "2020-08-01")
-					.param("end", "2020-12-31")
-					)
-			.andExpect(status().isOk())
-			.andExpect(content().contentType("application/json;charset=UTF-8"))
-			.andExpect(jsonPath("$.todoId").value("1"))
-			.andExpect(jsonPath("$.todoTitle").value("title1"))
-			.andExpect(jsonPath("$.finished").value(false))
-			.andExpect(jsonPath("$.deadLine").value(LocalDate.of(2020, 8, 1)));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		mockMvc.perform(
+				get("/todos")
+				.param("start", "2020-08-01")
+				.param("end", "2020-12-31")
+				)
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"title1\",\"finished\": false,\"createdAt\": null,\"deadLine\": \"2020-08-01\"}]"));
 		}
-		
 	}
 	
 //	@Test
@@ -107,5 +100,3 @@ public class TodoRestControllerTest {
 //	    assertThat(todoResponce.isFinished(), equalTo(false));
 //	    assertThat(todoResponce.getCreatedAt(), notNullValue());
 //	  }
-
-}
