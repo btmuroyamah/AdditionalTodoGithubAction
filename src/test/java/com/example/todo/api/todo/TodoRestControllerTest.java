@@ -50,9 +50,9 @@ public class TodoRestControllerTest {
 
 	@Test
 	public void getMappingのテスト() throws Exception {
-		//設定
+		// 設定
 		List<Todo> mockList = new ArrayList<>();
-		
+
 		Todo high = new Todo();
 		high.setTodoId("1");
 		high.setTodoTitle("high");
@@ -60,18 +60,15 @@ public class TodoRestControllerTest {
 		high.setCreatedAt(LocalDate.of(2020, 7, 1));
 		high.setDeadLine(null);
 		high.setPriority(Priority.High);
-		
+
 		mockList.add(high);
-		
+
 		when(todoService.findAll()).thenReturn(mockList);
-		
-		//実行
-		mockMvc.perform(
-					get("/todos")
-					.accept(MediaType.APPLICATION_JSON)
-				)
-		
-				//	ステータス、json、コンテントタイプをチェックする=アサーション
+
+		// 実行
+		mockMvc.perform(get("/todos").accept(MediaType.APPLICATION_JSON))
+
+				// ステータス、json、コンテントタイプをチェックする=アサーション
 				.andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"))
 				.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"high\",\"finished\": false,"
