@@ -7,6 +7,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.example.todo.domain.model.Priority;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import lombok.Data;
 
@@ -23,6 +26,8 @@ public class TodoResource implements Serializable {
 
 	private boolean finished;
 
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate createdAt;
 
 	private LocalDate deadLine;

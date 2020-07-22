@@ -18,12 +18,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.todo.domain.model.Priority;
 import com.example.todo.domain.model.Todo;
 import com.example.todo.domain.service.todo.TodoService;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 
 public class TodoRestControllerTest {
 
@@ -41,6 +44,8 @@ public class TodoRestControllerTest {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.standaloneSetup(target).alwaysDo(log()).build();
+		Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+		ReflectionTestUtils.setField(target, "beanMapper", mapper);
 	}
 
 	@Test
@@ -62,7 +67,7 @@ public class TodoRestControllerTest {
 		
 		//実行
 		mockMvc.perform(
-					get("/api/v1/todos")
+					get("/todos")
 					.accept(MediaType.APPLICATION_JSON)
 				)
 		
@@ -70,7 +75,7 @@ public class TodoRestControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"))
 				.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"high\",\"finished\": false,"
-						+ "\"createdAt\": LocalDate.of(2020, 7, 1) ,\"deadLine\": null,\"priority\": \"High\"}]"));
+						+ "\"createdAt\": 2020-07-01 ,\"deadLine\": null,\"priority\": \"High\"}]"));
 	}
 
 }
