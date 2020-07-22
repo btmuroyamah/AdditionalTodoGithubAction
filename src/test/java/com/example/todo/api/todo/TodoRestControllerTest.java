@@ -123,5 +123,54 @@ public class TodoRestControllerTest {
 					)
 			.andExpect(status().is4xxClientError());
 	}
+	
+	@Test
+	public void testgetTodosByLimit_startがnullでendもnullの場合() throws Exception {
+		
+		//検証するデータを登録
+		Collection<Todo> todos = new ArrayList<Todo>();
+		Todo todo = new Todo("1", "title1", false, LocalDate.of(2020, 8, 1));
+		todos.add(todo);
+		when(todoService.findByLimit(Mockito.any(), Mockito.any())).thenReturn(todos);
+		
+		mockMvc.perform(get("/todos"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"title1\",\"finished\": false,\"createdAt\": null,\"deadLine\": \"2020-08-01\"}]"));
+	}
+	
+	@Test
+	public void testgetTodosByLimit_startがnullでend20201231の場合() throws Exception {
+		
+		//検証するデータを登録
+		Collection<Todo> todos = new ArrayList<Todo>();
+		Todo todo = new Todo("1", "title1", false, LocalDate.of(2020, 8, 1));
+		todos.add(todo);
+		when(todoService.findByLimit(Mockito.any(), Mockito.any())).thenReturn(todos);
+		
+		mockMvc.perform(get("/todos")
+				.param("end", "2020-12-31")
+				)
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"title1\",\"finished\": false,\"createdAt\": null,\"deadLine\": \"2020-08-01\"}]"));
+	}
+	
+	@Test
+	public void testgetTodosByLimit_startが20200801でendがnullの場合() throws Exception {
+		
+		//検証するデータを登録
+		Collection<Todo> todos = new ArrayList<Todo>();
+		Todo todo = new Todo("1", "title1", false, LocalDate.of(2020, 8, 1));
+		todos.add(todo);
+		when(todoService.findByLimit(Mockito.any(), Mockito.any())).thenReturn(todos);
+		
+		mockMvc.perform(get("/todos")
+				.param("start", "2020-08-01")
+				)
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"title1\",\"finished\": false,\"createdAt\": null,\"deadLine\": \"2020-08-01\"}]"));
+	}
 }
 	

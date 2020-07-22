@@ -41,8 +41,8 @@ public class TodoRestController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<TodoResource> getTodosByLimit(
-			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("start") LocalDate start,
-			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("end") LocalDate end) {
+			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false, name = "start") LocalDate start,
+			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false,name = "end") LocalDate end) {
 		Collection<Todo> todos = todoService.findByLimit(start, end);
 		List<TodoResource> todoResources = new ArrayList<>();
 		for (Todo todo : todos) {
