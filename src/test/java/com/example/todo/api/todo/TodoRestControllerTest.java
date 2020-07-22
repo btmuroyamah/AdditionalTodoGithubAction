@@ -89,7 +89,7 @@ public class TodoRestControllerTest {
 					.param("start", "日付")
 					.param("end", "2020-12-31")
 					)
-			.andExpect(status().is4xxClientError());
+			.andExpect(status().is(400));
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ public class TodoRestControllerTest {
 					.param("start", "2020-08-01")
 					.param("end", "日付")
 					)
-			.andExpect(status().is4xxClientError());
+			.andExpect(status().is(400));
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class TodoRestControllerTest {
 					.param("start", "日付")
 					.param("end", "日付")
 					)
-			.andExpect(status().is4xxClientError());
+			.andExpect(status().is(400));
 	}
 	
 	@Test
