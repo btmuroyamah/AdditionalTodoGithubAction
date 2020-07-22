@@ -4,9 +4,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -33,50 +33,50 @@ public class TodoRepositoryImplTest {
 	
 	@Test
 	public void testfindByLimit_startとendがnullの場合() {
-		int result = target.findByLimit(null, null).size();
-		assertThat(result, is(2));
+		Collection<Todo> result = target.findByLimit(null, null);
+		assertThat(result.size(), is(2));
 	}
 	
 	@Test
 	public void testfindByLimit_startがnullでendが20200101の場合() {
-		int result = target.findByLimit(null, LocalDate.of(2020, 01, 01)).size();
-		assertThat(result, is(1));
+		Collection<Todo> result = target.findByLimit(null, LocalDate.of(2020, 01, 01));
+		assertThat(result.size(), is(1));
 	}
 	
 	@Test
 	public void testfindByLimit_startがnullでendが20200201の場合() {
-		int result = target.findByLimit(null, LocalDate.of(2020, 02, 01)).size();
-		assertThat(result, is(1));
+		Collection<Todo> result = target.findByLimit(null, LocalDate.of(2020, 02, 01));
+		assertThat(result.size(), is(1));
 	}
 	
 	@Test
 	public void testfindByLimit_startがnullでendが20200202の場合() {
-		int result = target.findByLimit(null, LocalDate.of(2020, 02, 02)).size();
-		assertThat(result, is(2));
+		Collection<Todo> result = target.findByLimit(null, LocalDate.of(2020, 02, 02));
+		assertThat(result.size(), is(2));
 	}
 	
 	@Test
 	public void testfindByLimit_startが20200101でendがnullの場合() {
-		int result = target.findByLimit(LocalDate.of(2020, 01, 01), null).size();
-		assertThat(result, is(2));
+		Collection<Todo> result = target.findByLimit(LocalDate.of(2020, 01, 01), null);
+		assertThat(result.size(), is(2));
 	}
 	
 	@Test
 	public void testfindByLimit_startが20200202でendがnullの場合() {
-		int result = target.findByLimit(LocalDate.of(2020, 02, 02), null).size();
-		assertThat(result, is(1));
+		Collection<Todo> result = target.findByLimit(LocalDate.of(2020, 02, 02), null);
+		assertThat(result.size(), is(1));
 	}
 	
 	@Test
 	public void testfindByLimit_startが20200203でendがnullの場合() {
-		int result = target.findByLimit(LocalDate.of(2020, 02, 03), null).size();
-		assertThat(result, is(0));
+		Collection<Todo> result = target.findByLimit(LocalDate.of(2020, 02, 03), null);
+		assertThat(result.size(), is(0));
 	}
 	
 	@Test
 	public void testfindByLimit_startが20200101でendが20201231の場合() {
-		int result = target.findByLimit(LocalDate.of(2020, 01, 01), LocalDate.of(2020, 12, 31)).size();
-		assertThat(result, is(2));
+		Collection<Todo> result = target.findByLimit(LocalDate.of(2020, 01, 01), LocalDate.of(2020, 12, 31));
+		assertThat(result.size(), is(2));
 	}
 
 }
