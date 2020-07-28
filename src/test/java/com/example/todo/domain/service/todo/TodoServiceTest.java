@@ -96,21 +96,16 @@ public class TodoServiceTest {
 	@Test
 	public void testCreate_NullToLow() {
 		//設定
-		List<Todo> mockList = new ArrayList<>();
 		
 		Todo mockNull = new Todo();
 		mockNull.setPriority(null);
 		mockNull.setCreatedAt(LocalDate.of(2020, 7, 1));
 		
-		mockList.add(mockNull);
-		
-		when(todoRepository.findAll()).thenReturn(mockList);
-		
 		//実行
-		List<Todo> result = target.findAll();
+		Todo result = target.create(mockNull);
 		
 		//アサーション
-		assertThat(result.get(0).getPriority(), is(Priority.Low));
+		assertThat(result.getPriority(), is(Priority.Low));
 		
 	}
 
