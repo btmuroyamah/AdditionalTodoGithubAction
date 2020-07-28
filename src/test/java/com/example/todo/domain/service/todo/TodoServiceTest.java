@@ -96,17 +96,15 @@ public class TodoServiceTest {
 	@Test
 	public void testCreate_NullToLow() {
 		//設定
-		
 		Todo mockNull = new Todo();
 		mockNull.setPriority(null);
 		mockNull.setCreatedAt(LocalDate.of(2020, 7, 1));
-		
+
 		//実行
 		Todo result = target.create(mockNull);
 		
 		//アサーション
 		assertThat(result.getPriority(), is(Priority.Low));
-		
 	}
 
 }
