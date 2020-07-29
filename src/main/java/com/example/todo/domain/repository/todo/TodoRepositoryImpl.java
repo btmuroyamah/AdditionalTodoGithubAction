@@ -37,15 +37,15 @@ public class TodoRepositoryImpl implements TodoRepository {
 				todos.add(todo);
 
 				// startとendともにある場合
-			} else if (isAfterStart(todo, start) && isBeforeEnd(todo, end) && !(todo.getDeadLine() == null)) {
+			} else if (!(todo.getDeadLine() == null) && isAfterStart(todo, start) && isBeforeEnd(todo, end)) {
 				todos.add(todo);
 
 				// endのみの場合
-			} else if (start == null && isBeforeEnd(todo, end) && !(todo.getDeadLine() == null)) {
+			} else if (!(todo.getDeadLine() == null) && start == null && isBeforeEnd(todo, end)) {
 				todos.add(todo);
 
 				// startのみの場合
-			} else if (end == null && isAfterStart(todo, start) && !(todo.getDeadLine() == null)) {
+			} else if (!(todo.getDeadLine() == null) && end == null && isAfterStart(todo, start)) {
 				todos.add(todo);
 			}
 		}

@@ -34,7 +34,7 @@ public class TodoRepositoryImplTest {
 	@Test
 	public void testfindByLimit_startとendがnullの場合() {
 		Collection<Todo> result = target.findByLimit(null, null);
-		assertThat(result.size(), is(2));
+		assertThat(result.size(), is(3));
 	}
 	
 	@Test
