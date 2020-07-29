@@ -30,32 +30,30 @@ public class TodoRepositoryImpl implements TodoRepository {
 	@Override
 	public Collection<Todo> findByLimit(LocalDate start, LocalDate end) {
 		Collection<Todo> todos = new ArrayList<Todo>();
-		
-		for(Todo todo: TODO_MAP.values()) {
-			if(todo.getDeadLine() == null) {
-				continue;
-			}
+
+		for (Todo todo : TODO_MAP.values()) {
 			
-			//startとendがともに無ければ期限付きのTodoを全件取得
-			if(start == null && end == null) {
+			// startとendがともに無ければTodoを全件取得
+			if (start == null && end == null) {
 				todos.add(todo);
-				
-				//startとendともにある場合
-			}else if(isAfterStart(todo, start) && isBeforeEnd(todo, end)) {
+
+				// startとendともにある場合
+			} else if (isAfterStart(todo, start) && isBeforeEnd(todo, end) && !(todo.getDeadLine() == null)) {
 				todos.add(todo);
-				
-				//endのみの場合
-			}else if(start == null && isBeforeEnd(todo, end)) {
+
+				// endのみの場合
+			} else if (start == null && isBeforeEnd(todo, end) && !(todo.getDeadLine() == null)) {
 				todos.add(todo);
-				
-				//startのみの場合
-			}else if(end == null && isAfterStart(todo, start)) {
+
+				// startのみの場合
+			} else if (end == null && isAfterStart(todo, start) && !(todo.getDeadLine() == null)) {
 				todos.add(todo);
 			}
 		}
-		
+
 		return todos;
 	}
+
 
 	@Override
 	public void create(Todo todo) {
