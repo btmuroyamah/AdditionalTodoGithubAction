@@ -2,7 +2,6 @@ package com.example.todo.api.todo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,8 +40,8 @@ public class TodoRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<TodoResource> getTodosByLimit(
 			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false, name = "start") LocalDate start,
-			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false,name = "end") LocalDate end) {
-		Collection<Todo> todos = todoService.findByLimit(start, end);
+			@FutureDateCheck @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam(required = false, name = "end") LocalDate end) {
+		List<Todo> todos = todoService.findByLimit(start, end);
 		List<TodoResource> todoResources = new ArrayList<>();
 		for (Todo todo : todos) {
 			todoResources.add(beanMapper.map(todo, TodoResource.class));

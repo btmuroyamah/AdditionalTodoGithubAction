@@ -1,8 +1,9 @@
 package com.example.todo.domain.repository.todo;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +14,7 @@ import com.example.todo.domain.model.Todo;
 
 @Repository
 public class TodoRepositoryImpl implements TodoRepository {
+
 	protected static final Map<String, Todo> TODO_MAP = new ConcurrentHashMap<String, Todo>();
 
 	@Override
@@ -21,13 +23,18 @@ public class TodoRepositoryImpl implements TodoRepository {
 	}
 
 	@Override
-	public Collection<Todo> findAll() {
-		return TODO_MAP.values();
+	public List<Todo> findAll() {
+		// Collection型のTODO_MAP.valuesを拡張for文でListにつめる
+		List<Todo> todos = new ArrayList<>();
+		for (Todo todo : TODO_MAP.values()) {
+			todos.add(todo);
+		}
+		return todos;
 	}
 
 	@Override
-	public Collection<Todo> findByLimit(LocalDate start, LocalDate end) {
-		Collection<Todo> todos = new ArrayList<Todo>();
+	public List<Todo> findByLimit(LocalDate start, LocalDate end) {
+		List<Todo> todos = new ArrayList<Todo>();
 
 		for (Todo todo : TODO_MAP.values()) {
 			

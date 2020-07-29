@@ -1,18 +1,17 @@
 package com.example.todo.domain.repository.todo;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import com.example.todo.domain.model.Todo;
-
-import java.util.Optional;
 
 public interface TodoRepository {
 	Optional<Todo> findById(String todoId);
 
-	Collection<Todo> findAll();
+	List<Todo> findAll();
 
-	Collection<Todo> findByLimit(LocalDate start, LocalDate end);
+	List<Todo> findByLimit(LocalDate start, LocalDate end);
 
 	void create(Todo todo);
 

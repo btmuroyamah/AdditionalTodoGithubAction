@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.example.common.validation.FutureDateCheck;
+import com.example.todo.domain.model.Priority;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,6 +23,12 @@ public class TodoResource implements Serializable {
 
 	private String todoId;
 
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@FutureDateCheck
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate deadLine;
+
 	@NotNull
 	@Size(min = 1, max = 30)
 	private String todoTitle;
@@ -32,10 +39,6 @@ public class TodoResource implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate createdAt;
 
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	@FutureDateCheck
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate deadLine;
+	private Priority priority;
 
 }

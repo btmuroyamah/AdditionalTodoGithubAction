@@ -20,11 +20,14 @@ public class Todo implements Serializable {
 
 	private LocalDate deadLine;
 	
-	public Todo(String todoId, String title, boolean finished, LocalDate deadLine){
-		this.todoId = todoId;
-		this.todoTitle = title;
-		this.finished = finished;
-		this.deadLine = deadLine;
-	}
+	private Priority priority;
+	
+	//test用のコンストラクタ
+//	public Todo(String todoId, String title, boolean finished, LocalDate deadLine){
+//		this.todoId = todoId;
+//		this.todoTitle = title;
+//		this.finished = finished;
+//		this.deadLine = deadLine;
+//	}
 
 }
