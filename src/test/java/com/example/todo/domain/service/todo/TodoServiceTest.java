@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.terasoluna.gfw.common.date.ClassicDateFactory;
 
 import com.example.todo.domain.model.Priority;
 import com.example.todo.domain.model.Todo;
@@ -26,6 +28,9 @@ public class TodoServiceTest {
 
 	@Mock
 	TodoRepository todoRepository;
+	
+	@Mock
+	ClassicDateFactory dateFactory;
 
 	@InjectMocks
 	private TodoServiceImpl target;
@@ -98,7 +103,7 @@ public class TodoServiceTest {
 		//設定
 		Todo mockNull = new Todo();
 		mockNull.setPriority(null);
-		mockNull.setCreatedAt(LocalDate.of(2020, 7, 1));
+		when(dateFactory.newSqlDate()).thenReturn(Date.valueOf(LocalDate.of(2020, 7, 1)));
 
 		//実行
 		Todo result = target.create(mockNull);
