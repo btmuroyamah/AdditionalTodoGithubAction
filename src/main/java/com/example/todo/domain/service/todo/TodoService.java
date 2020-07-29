@@ -1,18 +1,18 @@
 package com.example.todo.domain.service.todo;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.example.todo.domain.model.Todo;
 
 public interface TodoService {
-	
+
 	Todo findOne(String todoId);
-	
-    Collection<Todo> findAll();
 
-    Todo create(Todo todo);
+	List<Todo> findAll();
 
-    Todo finish(String todoId);
+	Todo create(Todo todo);
 
-    void delete(String todoId);
+	Todo finish(String todoId);
+
+	void delete(String todoId);
 }

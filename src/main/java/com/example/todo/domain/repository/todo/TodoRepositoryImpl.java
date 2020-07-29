@@ -1,6 +1,7 @@
 package com.example.todo.domain.repository.todo;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,15 +13,20 @@ import com.example.todo.domain.model.Todo;
 @Repository
 public class TodoRepositoryImpl implements TodoRepository {
 	private static final Map<String, Todo> TODO_MAP = new ConcurrentHashMap<String, Todo>();
-	
+
 	@Override
 	public Optional<Todo> findById(String todoId) {
 		return Optional.ofNullable(TODO_MAP.get(todoId));
 	}
 
 	@Override
-	public Collection<Todo> findAll() {
-		return TODO_MAP.values();
+	public List<Todo> findAll() {
+		// Collection型のTODO_MAP.valuesを拡張for文でListにつめる
+		List<Todo> todos = new ArrayList<>();
+		for (Todo todo : TODO_MAP.values()) {
+			todos.add(todo);
+		}
+		return todos;
 	}
 
 	@Override
@@ -31,7 +37,7 @@ public class TodoRepositoryImpl implements TodoRepository {
 	@Override
 	public boolean updateById(Todo todo) {
 		TODO_MAP.put(todo.getTodoId(), todo);
-        return true;
+		return true;
 	}
 
 	@Override
@@ -42,12 +48,11 @@ public class TodoRepositoryImpl implements TodoRepository {
 	@Override
 	public long countByFinished(boolean finished) {
 		long count = 0;
-        for (Todo todo : TODO_MAP.values()) {
-            if (finished == todo.isFinished()) {
-                count++;
-            }
-        }
-        return count;
-    }
+		for (Todo todo : TODO_MAP.values()) {
+			if (finished == todo.isFinished()) {
+				count++;
+			}
+		}
+		return count;
+	}
 }
-

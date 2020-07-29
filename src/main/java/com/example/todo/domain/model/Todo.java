@@ -2,24 +2,24 @@ package com.example.todo.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 import lombok.Data;
 
 @Data
 public class Todo implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
-    private String todoId;
+	private String todoId;
 
-    private String todoTitle;
+	private String todoTitle;
 
-    private boolean finished;
+	private boolean finished;
 
-    private Date createdAt;
-    
-    private LocalDate deadLine;
+	private LocalDate createdAt;
 
+	private LocalDate deadLine;
+
+	private Priority priority;
 
 }
