@@ -2,6 +2,7 @@ package com.example.todo.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class Todo implements Serializable {
 
 	private boolean finished;
 
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 
 	private LocalDate deadLine;
 	

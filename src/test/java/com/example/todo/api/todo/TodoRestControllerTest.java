@@ -8,8 +8,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.terasoluna.gfw.common.date.ClassicDateFactory;
 
 import com.example.todo.domain.model.Priority;
 import com.example.todo.domain.model.Todo;
@@ -42,6 +46,9 @@ public class TodoRestControllerTest {
 	
 	@Mock
 	TodoService todoService;
+	
+	@Inject
+	ClassicDateFactory dateFactory;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -176,7 +183,7 @@ public class TodoRestControllerTest {
 		high.setTodoId("1");
 		high.setTodoTitle("high");
 		high.setFinished(false);
-		high.setCreatedAt(LocalDate.of(2020, 7, 1));
+		high.setCreatedAt(LocalDateTime.of(2020, 07, 01, 00, 00, 00));
 		high.setDeadLine(null);
 		high.setPriority(Priority.High);
 
@@ -204,7 +211,7 @@ public class TodoRestControllerTest {
 		fakePriority.setTodoId("1");
 		fakePriority.setTodoTitle("fake");
 		fakePriority.setFinished(false);
-		fakePriority.setCreatedAt(LocalDate.of(2020, 7, 1));
+		fakePriority.setCreatedAt(LocalDateTime.of(2020, 07, 01, 00, 00, 00));
 		fakePriority.setDeadLine(null);
 		fakePriority.setPriority(null);
 		

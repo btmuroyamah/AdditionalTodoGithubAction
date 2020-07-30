@@ -1,6 +1,7 @@
 package com.example.todo.domain.service.todo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -69,17 +70,17 @@ public class TodoServiceImpl implements TodoService {
 		// 各優先度のtodoをList<Todo> todosHogeHogeに入れる
 		List<Todo> todosHigh = todos.stream()
 				.filter(h -> h.getPriority() == Priority.High)
-				.sorted(Comparator.comparing(Todo::getCreatedAt))
+				.sorted(Comparator.comparing(Todo::getCreatedAt).reversed())
 				.collect(Collectors.toList());
 
 		List<Todo> todosMiddle = todos.stream()
 				.filter(m -> m.getPriority() == Priority.Middle)
-				.sorted(Comparator.comparing(Todo::getCreatedAt))
+				.sorted(Comparator.comparing(Todo::getCreatedAt).reversed())
 				.collect(Collectors.toList());
 
 		List<Todo> todosLow = todos.stream()
 				.filter(l -> l.getPriority() == Priority.Low)
-				.sorted(Comparator.comparing(Todo::getCreatedAt))
+				.sorted(Comparator.comparing(Todo::getCreatedAt).reversed())
 				.collect(Collectors.toList());
 
 		List<Todo> sortedTodos = new ArrayList<>();
@@ -101,7 +102,7 @@ public class TodoServiceImpl implements TodoService {
 		}
 
 		String todoId = UUID.randomUUID().toString();
-		LocalDate createdAt = dateFactory.newSqlDate().toLocalDate();
+		LocalDateTime createdAt = LocalDateTime.now();
 
 		todo.setTodoId(todoId);
 		todo.setCreatedAt(createdAt);

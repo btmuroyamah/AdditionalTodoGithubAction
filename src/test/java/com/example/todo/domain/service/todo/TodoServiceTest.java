@@ -4,8 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +43,15 @@ public class TodoServiceTest {
 
 		Todo mockLow = new Todo();
 		mockLow.setPriority(Priority.Low);
-		mockLow.setCreatedAt(LocalDate.of(2020, 7, 1));
+		mockLow.setCreatedAt(LocalDateTime.of(2020, 07, 01, 00, 00, 00));
 		Todo mockMiddle = new Todo();
 		mockMiddle.setPriority(Priority.Middle);
-		mockMiddle.setCreatedAt(LocalDate.of(2020, 7, 1));
+		mockMiddle.setCreatedAt(LocalDateTime.of(2020, 07, 01, 00, 00, 00));
 		Todo mockHigh = new Todo();
 		mockHigh.setPriority(Priority.High);
-		mockHigh.setCreatedAt(LocalDate.of(2020, 7, 1));
+		mockHigh.setCreatedAt(LocalDateTime.of(2020, 07, 01, 00, 00, 00));
+
+
 
 		mockList.add(mockLow);
 		mockList.add(mockMiddle);
@@ -75,13 +76,13 @@ public class TodoServiceTest {
 
 		Todo mockHigh1 = new Todo();
 		mockHigh1.setPriority(Priority.High);
-		mockHigh1.setCreatedAt(LocalDate.of(2020, 7, 1));
+		mockHigh1.setCreatedAt(LocalDateTime.of(2020, 07, 01, 00, 00, 00));
 		Todo mockHigh2 = new Todo();
 		mockHigh2.setPriority(Priority.High);
-		mockHigh2.setCreatedAt(LocalDate.of(2020, 7, 2));
+		mockHigh2.setCreatedAt(LocalDateTime.of(2020, 07, 02, 00, 00, 00));
 		Todo mockHigh3 = new Todo();
 		mockHigh3.setPriority(Priority.High);
-		mockHigh3.setCreatedAt(LocalDate.of(2020, 7, 3));
+		mockHigh3.setCreatedAt(LocalDateTime.of(2020, 07, 03, 00, 00, 00));
 
 		mockList.add(mockHigh1);
 		mockList.add(mockHigh2);
@@ -93,9 +94,9 @@ public class TodoServiceTest {
 		List<Todo> result = target.findAll();
 
 		// アサーション
-		assertThat(result.get(2).getCreatedAt(), is(LocalDate.of(2020, 7, 3)));
-		assertThat(result.get(1).getCreatedAt(), is(LocalDate.of(2020, 7, 2)));
-		assertThat(result.get(0).getCreatedAt(), is(LocalDate.of(2020, 7, 1)));
+		assertThat(result.get(2).getCreatedAt(), is(LocalDateTime.of(07, 03, 00, 00, 00)));
+		assertThat(result.get(1).getCreatedAt(), is(LocalDateTime.of(2020, 7, 2, 00, 00, 00)));
+		assertThat(result.get(0).getCreatedAt(), is(LocalDateTime.of(2020, 7, 1, 00, 00, 00)));
 	}
 	
 	@Test
@@ -103,7 +104,6 @@ public class TodoServiceTest {
 		//設定
 		Todo mockNull = new Todo();
 		mockNull.setPriority(null);
-		when(dateFactory.newSqlDate()).thenReturn(Date.valueOf(LocalDate.of(2020, 7, 1)));
 
 		//実行
 		Todo result = target.create(mockNull);
