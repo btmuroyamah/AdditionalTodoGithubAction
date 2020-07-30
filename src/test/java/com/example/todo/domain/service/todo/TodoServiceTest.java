@@ -95,9 +95,9 @@ public class TodoServiceTest {
 		List<Todo> result = target.findByLimit(Mockito.any(), Mockito.any());
 
 		// アサーション
-		assertThat(result.get(2).getCreatedAt(), is(LocalDateTime.of(2020, 07, 03, 00, 00, 00)));
-		assertThat(result.get(1).getCreatedAt(), is(LocalDateTime.of(2020, 7, 2, 00, 00, 00)));
-		assertThat(result.get(0).getCreatedAt(), is(LocalDateTime.of(2020, 7, 1, 00, 00, 00)));
+		assertThat(result.get(0).getCreatedAt(), is(LocalDateTime.of(2020, 07, 03, 00, 00, 00)));
+		assertThat(result.get(1).getCreatedAt(), is(LocalDateTime.of(2020, 07, 02, 00, 00, 00)));
+		assertThat(result.get(2).getCreatedAt(), is(LocalDateTime.of(2020, 07, 01, 00, 00, 00)));
 	}
 	
 	@Test
