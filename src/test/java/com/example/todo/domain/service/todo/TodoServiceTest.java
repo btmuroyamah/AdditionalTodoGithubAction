@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.terasoluna.gfw.common.date.ClassicDateFactory;
@@ -35,7 +36,7 @@ public class TodoServiceTest {
 	private TodoServiceImpl target;
 
 	@Test
-	public void testFindAll_PrioritySort() {
+	public void testFindByLimit_PrioritySort() {
 		// findAll()を呼び出したときにmockListをかえす処理
 
 		// 設定
@@ -57,10 +58,10 @@ public class TodoServiceTest {
 		mockList.add(mockMiddle);
 		mockList.add(mockHigh);
 
-		when(todoRepository.findAll()).thenReturn(mockList);
+		when(todoRepository.findByLimit(Mockito.any(), Mockito.any())).thenReturn(mockList);
 
 		// 実行
-		List<Todo> result = target.findAll();
+		List<Todo> result = target.findByLimit(Mockito.any(), Mockito.any());
 
 		// アサーション
 		assertThat(result.get(0).getPriority(), is(Priority.High));
@@ -69,7 +70,7 @@ public class TodoServiceTest {
 	}
 
 	@Test
-	public void testFindAll_LocalDateSort() {
+	public void testFindByLimit_LocalDateSort() {
 
 		// 設定
 		List<Todo> mockList = new ArrayList<>();
@@ -88,13 +89,13 @@ public class TodoServiceTest {
 		mockList.add(mockHigh2);
 		mockList.add(mockHigh3);
 
-		when(todoRepository.findAll()).thenReturn(mockList);
+		when(todoRepository.findByLimit(Mockito.any(), Mockito.any())).thenReturn(mockList);
 
 		// 実行
-		List<Todo> result = target.findAll();
+		List<Todo> result = target.findByLimit(Mockito.any(), Mockito.any());
 
 		// アサーション
-		assertThat(result.get(2).getCreatedAt(), is(LocalDateTime.of(07, 03, 00, 00, 00)));
+		assertThat(result.get(2).getCreatedAt(), is(LocalDateTime.of(2020, 07, 03, 00, 00, 00)));
 		assertThat(result.get(1).getCreatedAt(), is(LocalDateTime.of(2020, 7, 2, 00, 00, 00)));
 		assertThat(result.get(0).getCreatedAt(), is(LocalDateTime.of(2020, 7, 1, 00, 00, 00)));
 	}

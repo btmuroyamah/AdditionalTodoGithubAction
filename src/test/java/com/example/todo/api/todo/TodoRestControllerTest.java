@@ -198,7 +198,7 @@ public class TodoRestControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"))
 				.andExpect(content().json("[{\"todoId\": \"1\",\"todoTitle\": \"high\",\"finished\": false,"
-						+ "\"createdAt\": 2020-07-01 ,\"deadLine\": null,\"priority\": \"High\"}]"));
+						+ "\"createdAt\": \"2020-07-01 00:00:00\",\"deadLine\": null,\"priority\": \"High\"}]"));
 	}
 	
 	@Test
